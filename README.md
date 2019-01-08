@@ -1,76 +1,55 @@
 # liberty_monitor
 
-## Usage
+## Monitor by restConnector
 
-(optional) Build liberty image.
+Build liberty image.
 
 ```shell
-docker build -t sotoiwa540/liberty-sample:1.0 .
-docker push sotoiwa540/liberty-sample:1.0
+cd ./liberty-restConnector
+docker build -t sotoiwa540/liberty-restConnector:1.0 .
+docker push sotoiwa540/liberty-restConnector:1.0
 ```
 
 Build monitor image.
 
 ```shell
-docker build -t sotoiwa540/liberty-monitor:1.0 .
-docker push sotoiwa540/liberty-monitor:1.0
+cd ./monitor-restConnector
+docker build -t sotoiwa540/monitor-restConnector:1.0 .
+docker push sotoiwa540/monitor-restConnector:1.0
 ```
 
-Deploy liberty container with sidecar container.
+Create secret.
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: liberty
-spec:
-  selector:
-    matchLabels:
-      app: liberty
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: liberty
-    spec:
-      containers:
-      - name: liberty
-        image: sotoiwa540/liberty-sample:1.0
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 9080
-      - name: monitor
-        image: sotoiwa540/liberty-monitor:1.0
-        imagePullPolicy: Always
-        command:
-        - python
-        - ./libertymon.py
-        args:
-        - --host
-        - localhost
-        - --port
-        - "9443"
-        - --interval
-        - "60"
-        - --timeout
-        - "2"
-        - --delay
-        - "30"
-        env:
-        - name: JMX_USER
-          valueFrom:
-            secretKeyRef:
-              name: jmx-secret
-              key: JMX_USER
-        - name: JMX_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: jmx-secret
-              key: JMX_PASSWORD
+```shell
+kubectl create secret generic jmx-secret --from-literal=JMX_USER=jmxadmin --from-literal=JMX_PASSWORD=password
 ```
 
 Deploy liberty with sidecar.
 
 ```shell
-kubectl apply -f liberty-deployment.yaml
+kubectl apply -f liberty-deployment-restConnector.yaml
+```
+
+## Monitor by mpMetrics
+
+Build liberty image.
+
+```shell
+cd ./liberty-mpMetrics
+docker build -t sotoiwa540/liberty-mpMetrics:1.0 .
+docker push sotoiwa540/liberty-mpMetrics:1.0
+```
+
+Build monitor image.
+
+```shell
+cd ./monitor-mpMetrics
+docker build -t sotoiwa540/monitor-mpMetrics:1.0 .
+docker push sotoiwa540/monitor-mpMetrics:1.0
+```
+
+Deploy liberty with sidecar.
+
+```shell
+kubectl apply -f liberty-deployment-mpMetrics.yaml
 ```

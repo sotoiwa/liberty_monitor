@@ -14,16 +14,16 @@ spec:
     spec:
       containers:
       - name: liberty
-        image: sotoiwa540/liberty-sample:1.0
+        image: sotoiwa540/liberty-restConnector:1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 9080
       - name: monitor
-        image: sotoiwa540/liberty-monitor:1.0
+        image: sotoiwa540/monitor-restConnector:1.0
         imagePullPolicy: Always
         command:
         - python
-        - ./libertymon.py
+        - ./monitor_restConnector.py
         args:
         - --host
         - localhost
@@ -46,4 +46,3 @@ spec:
             secretKeyRef:
               name: jmx-secret
               key: JMX_PASSWORD
-
