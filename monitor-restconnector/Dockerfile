@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY monitor_restConnector.py ./
 
 ENV PYTHONUNBUFFERED TRUE
-ENTRYPOINT [ "python", "./libertymon.py" ]
+ENTRYPOINT [ "python", "./monitor_restConnector.py" ]

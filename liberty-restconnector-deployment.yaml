@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: liberty
+  name: liberty-restconnector
 spec:
   selector:
     matchLabels:
@@ -14,24 +14,35 @@ spec:
     spec:
       containers:
       - name: liberty
-        image: sotoiwa540/liberty-mpMetrics:1.0
+        image: sotoiwa540/liberty-restconnector:1.0
         imagePullPolicy: Always
         ports:
         - containerPort: 9080
       - name: monitor
-        image: sotoiwa540/monitor-mpMetrics:1.0
+        image: sotoiwa540/monitor-restconnector:1.0
         imagePullPolicy: Always
         command:
         - python
-        - ./monitor_mpMetrics.py
+        - ./monitor_restConnector.py
         args:
         - --host
         - localhost
         - --port
-        - "9080"
+        - "9443"
         - --interval
         - "60"
         - --timeout
         - "2"
         - --delay
         - "30"
+        env:
+        - name: JMX_USER
+          valueFrom:
+            secretKeyRef:
+              name: jmx-secret
+              key: JMX_USER
+        - name: JMX_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: jmx-secret
+              key: JMX_PASSWORD

@@ -5,17 +5,17 @@
 Build liberty image.
 
 ```shell
-cd ./liberty-restConnector
-docker build -t sotoiwa540/liberty-restConnector:1.0 .
-docker push sotoiwa540/liberty-restConnector:1.0
+cd ./liberty-restconnector
+docker build -t sotoiwa540/liberty-restconnector:1.0 .
+docker push sotoiwa540/liberty-restconnector:1.0
 ```
 
 Build monitor image.
 
 ```shell
-cd ./monitor-restConnector
-docker build -t sotoiwa540/monitor-restConnector:1.0 .
-docker push sotoiwa540/monitor-restConnector:1.0
+cd ./monitor-restconnector
+docker build -t sotoiwa540/monitor-restconnector:1.0 .
+docker push sotoiwa540/monitor-restconnector:1.0
 ```
 
 Create secret.
@@ -35,21 +35,21 @@ kubectl apply -f liberty-deployment-restConnector.yaml
 Build liberty image.
 
 ```shell
-cd ./liberty-mpMetrics
-docker build -t sotoiwa540/liberty-mpMetrics:1.0 .
-docker push sotoiwa540/liberty-mpMetrics:1.0
+cd ./liberty-mpmetrics
+docker build -t sotoiwa540/liberty-mpmetrics:1.0 .
+docker push sotoiwa540/liberty-mpmetrics:1.0
 ```
 
 Build monitor image.
 
 ```shell
-cd ./monitor-mpMetrics
-docker build -t sotoiwa540/monitor-mpMetrics:1.0 .
-docker push sotoiwa540/monitor-mpMetrics:1.0
+cd ./monitor-mpmetrics
+docker build -t sotoiwa540/monitor-mpmetrics:1.0 .
+docker push sotoiwa540/monitor-mpmetrics:1.0
 ```
 
 Deploy liberty with sidecar.
 
 ```shell
-kubectl apply -f liberty-deployment-mpMetrics.yaml
+kubectl apply -f liberty-mpmetrics-deployment.yaml.yaml
 ```
